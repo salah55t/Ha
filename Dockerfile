@@ -12,11 +12,14 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# تحميل النسخة المستقرة من منتدى NodeBB
+# تحميل النسخة المستقرة من منتدى NodeBB مباشرة في المجلد الحالي
 RUN git clone -b v3.x https://github.com/NodeBB/NodeBB.git .
 
-# تثبيت الحزم والاعتماديات الخاصة بالمنتدى
-RUN npm install --production
+# تغيير مسار العمل والتأكد من الانتقال للمجلد الصحيح إذا لزم الأمر
+WORKDIR /usr/src/app
+
+# تثبيت الحزم والاعتماديات الخاصة بالمنتدى بشكل صحيح
+RUN npm install --omit=dev
 
 # فتح المنفذ الافتراضي للمنتدى
 EXPOSE 4567
